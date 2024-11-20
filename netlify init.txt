@@ -1,0 +1,31 @@
+C:\Users\Bao Nguyen\Desktop\Frontend>netlify init
+Logging into your Netlify account...
+Opening https://app.netlify.com/authorize?response_type=ticket&ticket=26d9fc17d56bd1ec830938c0bee59520
+
+You are now logged into your Netlify account!
+
+Run netlify status for account details
+
+To see all available commands run: netlify help
+
+
+Adding local .netlify folder to .gitignore file...
+? What would you like to do? ⇄  Connect this directory to an existing Netlify site
+
+netlify link will connect this folder to a site on Netlify
+
+? How do you want to link this folder to a site? Choose from a list of your recently updated sites
+Fetching recently updated sites...
+
+? Which site do you want to link? lively-alpaca-e139de
+
+Directory Linked
+
+Admin url: https://app.netlify.com/sites/lively-alpaca-e139de
+Site url:  https://lively-alpaca-e139de.netlify.app
+
+You can now run other `netlify` cli commands in this directory
+
+
+Success
+This site "lively-alpaca-e139de" is configured to automatically deploy via https://github.com/ngblam2207/netlify-deploy-demo
