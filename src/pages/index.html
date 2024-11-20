@@ -1,0 +1,184 @@
+<html>
+<header>
+<script>
+	function Calculate() {
+		// Get net income
+		var netIncome = document.getElementById("netIncome").value;
+		console.log("Net income: "+netIncome);
+		
+		// Get marital status
+		var marital = document.querySelector('input[name="marital"]:checked').value;
+		console.log("Marital status: "+marital);
+		
+		// Get number of dependents
+		var dependentElement = document.getElementById("dependents");
+		var dependents = dependentElement.options[dependentElement.selectedIndex].value;
+		console.log("Number of dependent(s): "+dependents);
+		
+		// An array representing the expenditure of each income bracket
+		// Each index is an object containing the base expenditure of a person or Couple
+		// without any dependent AND the cost of each dependent added (multiplication)
+		// The numbers are obtained from qq Calculations
+		// \Freedom Lend Dropbox\User\With Cashback\Web Pages\qq calculations
+		var single = [
+			{ base: 14508, dependent: 6240 },	// bracketIndex 0
+			{ base: 15288, dependent: 5980 },	// bracketIndex 1
+			{ base: 16068, dependent: 5720 },	// bracketIndex 2
+			{ base: 17108, dependent: 5720 },	// bracketIndex 3
+			{ base: 18928, dependent: 5772 },	// bracketIndex 4
+			{ base: 21736, dependent: 5772 },	// bracketIndex 5
+			{ base: 25740, dependent: 5824 },	// bracketIndex 6
+			{ base: 29172, dependent: 5876 },	// bracketIndex 7
+			{ base: 33748, dependent: 5876 },	// bracketIndex 8
+			{ base: 35672, dependent: 5928 },	// bracketIndex 9
+			{ base: 35428, dependent: 8928 },	// bracketIndex 10
+			{ base: 43940, dependent: 5980 },	// bracketIndex 11
+			{ base: 49764, dependent: 6032 },	// bracketIndex 12
+			{ base: 52728, dependent: 6084 }	// bracketIndex 13
+		];
+		var couple1 = [
+			{ base: 28080, dependent: 4264 },	// bracketIndex 0
+			{ base: 28080, dependent: 4264 },	// bracketIndex 1
+			{ base: 28470, dependent: 4134 },	// bracketIndex 2
+			{ base: 28964, dependent: 3978 },	// bracketIndex 3
+			{ base: 29900, dependent: 3978 },	// bracketIndex 4
+			{ base: 31278, dependent: 3978 },	// bracketIndex 5
+			{ base: 33280, dependent: 3978 },	// bracketIndex 6
+			{ base: 34996, dependent: 3978 },	// bracketIndex 7
+			{ base: 37284, dependent: 3978 },	// bracketIndex 8
+			{ base: 38246, dependent: 3978 },	// bracketIndex 9
+			{ base: 39624, dependent: 3978 },	// bracketIndex 10
+			{ base: 42380, dependent: 3978 },	// bracketIndex 11
+			{ base: 45266, dependent: 3978 },	// bracketIndex 12
+			{ base: 47294, dependent: 3978 }	// bracketIndex 13
+		];
+		var couple2 = [
+			{ base: 28080, dependent: 4264 },	// bracketIndex 0
+			{ base: 28080, dependent: 4264 },	// bracketIndex 1
+			{ base: 28860, dependent: 4004 },	// bracketIndex 2
+			{ base: 29848, dependent: 3692 },	// bracketIndex 3	
+			{ base: 31720, dependent: 3692 },	// bracketIndex 4
+			{ base: 34476, dependent: 3692 },	// bracketIndex 5
+			{ base: 38480, dependent: 3692 },	// bracketIndex 6
+			{ base: 41912, dependent: 3692 },	// bracketIndex 7
+			{ base: 46488, dependent: 3692 },	// bracketIndex 8
+			{ base: 48412, dependent: 3692 },	// bracketIndex 9
+			{ base: 51168, dependent: 3692 },	// bracketIndex 10
+			{ base: 56680, dependent: 3692 },	// bracketIndex 11
+			{ base: 62452, dependent: 3692 },	// bracketIndex 12
+			{ base: 66508, dependent: 3692 }	// bracketIndex 13
+		];
+		// Household Expenditure Matrix with the second dimension for marital status
+		var HEM = [single, couple1, couple2];
+		
+		// Income brackets
+		// There are 14 HEM income bracket on Sep 24
+		var brackets = [24000, 36000, 48000, 59000, 71000, 95000, 119000,
+						143000, 166000, 190000, 238000, 297000, 357000];
+
+		var result = 0;
+
+		// Find where netIncome falls into the income bracket
+		// netIncome <= brackets[bracketIndex]
+		var bracketIndex = findBracket(netIncome, brackets);
+		console.log("Net income falls in the bracket index:", bracketIndex);
+
+		<!-- if (marital == 'single') { -->
+			<!-- result = HEM[0][bracketIndex].base + HEM[0][bracketIndex].dependent * dependents; -->
+		<!-- } else if (marital == 'couple1') { -->
+			<!-- result = HEM[1][bracketIndex].base + HEM[1][bracketIndex].dependent * dependents; -->
+		<!-- } else if (marital == 'couple2') { -->
+			<!-- result = HEM[2][bracketIndex].base + HEM[2][bracketIndex].dependent * dependents; -->
+		<!-- }  -->
+		var numApp = 1;
+		var netIncome2 = 28000;
+		var marital2 = 'single';
+		if (numApp == 2) {
+			if (marital == 'couple2' && netIncome2 != 0 && netIncome != 0) {
+				result = findLivingExpense(2, netIncome+netIncome2, HEM, brackets);
+			} else if (marital == 
+		}
+		
+		document.getElementById("HEM").innerHTML = result;
+		
+	}
+	
+	// Find where netIncome falls into each income brackets
+	function findBracket(netIncome, brackets) {
+		var left = 0;
+		var right = brackets.length - 1;
+
+		while (left <= right) {
+			var mid = Math.floor((left + right) / 2);
+
+			/*
+			if netIncome falls below the middle index value of the income bracket
+				reduce the size of the bracket to only the first half (right index is now mid)
+					continue reducing the size of the bracket
+			if netIncome falls above the middle index value of the income bracket
+				reduce the size of the bracket to only the second half (left index is now mid)
+					continue reducing the size of the bracket
+			if netIncome is equal to middle index, return middle index value
+			*/
+			if (netIncome < brackets[mid]) {
+				right = mid - 1;
+			} else if (netIncome > brackets[mid]) {
+				left = mid + 1;
+			} else {
+				return mid; // Exact match found
+			}
+		}
+
+		// If no exact match is found, left will be the index of the first bracket greater than netIncome
+		return left;
+	}
+	
+	// Calculate livingExpense based on the marital status of the applicant(s)
+	function calLivingExpense(maritalStatus, netIncome, HEM, brackets) {
+		// Marital index is 0, 1, 2 to indicate couple/single in HEM
+		var maritalIndex = 0;
+		
+		if (maritalStatus == 'Single') {
+			// index 0 stands for single
+			maritalIndex = 0;	
+		} else if (maritalStatus == 'Couple (Sole Borrower)') {
+			// index 2 stands for sole borrower, same metric as couple with 2 incomes
+			maritalIndex = 2;	
+		}
+		
+		// Find the bracket in which the net income falls 
+		var backetIndex = findBracket(netIncome, brackets);
+		
+		// Calculate living expense with Household Expenditure Matrix
+		var livingExpense = HEM[maritalIndex][bracketIndex].base + HEM[maritalIndex][bracketIndex].dependent * dependents;
+		
+		return livingExpense;
+	}
+</script>
+</header>
+<body>
+	<input type="radio" name="marital" value="single"/>
+	<label for="single">Single</label>
+	<input type="radio" name="marital" value="couple1"/>
+	<label for="couple1">Couple (1 income)</label>
+	<input type="radio" name="marital" value="couple2"/>
+	<label for="couple2">Couple</label>
+	</br></br>
+	
+	<label for="dependents">Please specify the number of dependents</label>
+	<select id="dependents" name="dependents">
+		<option value="0">No dependent	</option>
+		<option value="1">1 dependent	</option>
+		<option value="2">2 dependents	</option>
+		<option value="3">3 dependents	</option>
+		<option value="4">4 dependents	</option>
+		<option value="5">5 dependents	</option>
+	</select>
+	</br></br>
+	<input type="number" id="netIncome" placeholder="Net Income"/>
+	<button onClick="Calculate()">Calculate</button>
+	<div>
+		HEM: <span id="HEM"></span>
+	</div>
+</body>
+</html>
