@@ -1,0 +1,13 @@
+# netlify.toml file for React (with react-scripts)
+[build]
+  # Command to build the project
+  command = "npm run build"
+  
+  # Directory to publish after the build
+  publish = "build"
+  
+  # Optional: Redirects or Headers (more on that below)
+
+[dev]
+  # Configure Netlify Dev to use the port you prefer (default is 3000)
+  targetPort = 3000
